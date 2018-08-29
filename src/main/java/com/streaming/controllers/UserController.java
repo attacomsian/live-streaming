@@ -4,8 +4,11 @@ import com.streaming.domains.User;
 import com.streaming.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/users")
@@ -21,8 +24,10 @@ public class UserController {
     }
 
     @PostMapping("/sign-up")
-    public void signUp(String username, String password) {
-        User user = new User(username, bCryptPasswordEncoder.encode(password));
+    public void signUp(@RequestBody User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setCreated(new Date());
+        user.setModified(new Date());
         userRepository.save(user);
     }
 }
