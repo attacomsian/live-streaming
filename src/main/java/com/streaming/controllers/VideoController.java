@@ -17,13 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/videos")
+@RequestMapping("/api/v1.0/videos")
 public class VideoController {
 
     private static final Logger logger = LoggerFactory.getLogger(VideoController.class);
@@ -67,10 +65,11 @@ public class VideoController {
         return video.isPresent() ? video.get() : null;
     }
 
-    @GetMapping("/download/{fileName:.+}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+    @GetMapping("/download/{id:.+}")
+    public ResponseEntity<Resource> downloadFile(@PathVariable Long id, HttpServletRequest request) {
+        Optional<Video> video = videoRepository.findById(id);
         // Load file as Resource
-        Resource resource = fileStorageService.loadFileAsResource(fileName);
+        Resource resource = fileStorageService.loadFileAsResource(video.get().getUrl());
 
         // try to find file's content type
         String contentType = null;

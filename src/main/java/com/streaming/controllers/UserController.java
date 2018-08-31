@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1.0/users")
 public class UserController {
 
     private UserRepository userRepository;
