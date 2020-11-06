@@ -12,45 +12,25 @@ To run this application, use the following Gradle command:
 ./gradlew bootRun
 ```
 
+## Usage (Docker)
+In order to use the Docker version of the app, it is needed docker-compose.
+To build the application, run the following command:
+```bash
+live-streaming$ make build
+```
+To run the containers (both the application and the MySQL database), run the following command:
+```bash
+live-streaming$ make up
+```
+To stop the containers, use the following command:
+```bash
+live-streaming$ make down
+```
+
 ## Documentation
 When the application is running, the documentation is available at the following link:
 ```text
 http://localhost:8080/swagger-ui.html
-```
-
-## Database
-Following SQL script is used to create a MySQL database for storing users and videos data.
-```sql
-#create database
-CREATE DATABASE live-stremaing;
-
-#switch to newly created database
-USE live-streaming;
-
-#create users table
-CREATE TABLE `users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-#create videos table
-CREATE TABLE `videos` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(10) unsigned NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `size` double DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created` datetime DEFAULT NULL,
-  `modified` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_videos_users_idx` (`user_id`),
-  CONSTRAINT `fk_videos_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
 ## License
